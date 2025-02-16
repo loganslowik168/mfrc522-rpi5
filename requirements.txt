@@ -1,0 +1,3 @@
+mfrc522==0.0.7
+pyembedded==3.5
+spidev==3.6
