@@ -1,4 +1,6 @@
-# Example usage:
+# Required files
+The actual repo only needs the  `mfrc522.py` files.  See `main.py` or the **Exmaple Usage** in this README for the correct way to call the scanning function.
+# Example usage
 ```python
 from rfid_scanner import scan_rfid
 
