@@ -440,17 +440,20 @@ class mfrc522:
 
         return (self.MI_OK,valid_uid)
 
+# --------------------------------------------------------------------------------------------------------------------
+
 import signal
 import time
 
 continue_reading = True
+
 
 def uidToString(uid):
     return ''.join(format(i, '02X') for i in reversed(uid))
 
 def end_read(signal, frame):
     global continue_reading
-    print("Ctrl+C captured, ending read.")
+    print("\nCtrl+C captured, ending read.")
     continue_reading = False
 
 signal.signal(signal.SIGINT, end_read)
@@ -465,11 +468,12 @@ def scan_rfid(mode="once", time_limit=10, match_uid=None):
     - "match": Scan until a match is found, ignoring time
     - "first_match": Scan until any UID is found, then exit
     - "first_match_or_time": Scan until any UID is found OR `time_limit` seconds have elapsed
+    - "forever": Scan forever (must manually interrupt program to stop)
     """
     start_time = time.time()
     global continue_reading
     continue_reading = True
-    
+    uid_str = None
     while continue_reading:
         if mode == "once":
             continue_reading = False  # Exit after one scan
@@ -480,23 +484,25 @@ def scan_rfid(mode="once", time_limit=10, match_uid=None):
         
         status, TagType = MIFAREReader.MFRC522Request(MIFAREReader.PICC_REQIDL)
         if status == MIFAREReader.MI_OK:
-            print("Card detected")
+            #print("Card detected")
             status, uid = MIFAREReader.MFRC522_SelectTagSN()
             if status == MIFAREReader.MI_OK:
                 uid_str = uidToString(uid)
                 print("Card read UID:", uid_str)
                 
                 if mode in ["first_match", "first_match_or_time"]:
-                    break
+                    return uid_str
+                    #break
                 
                 if match_uid and uid_str == match_uid:
                     print("Match found!")
-                    break
+                    return uid_str
+                    #break
                 
                 if mode == "once":
-                    break
+                    return uid_str
         
-        time.sleep(0.5)  # Slight delay to prevent excessive polling
+        
 
 # Example usages:
 # scan_rfid(mode="once")  # Scan only once
@@ -505,3 +511,4 @@ def scan_rfid(mode="once", time_limit=10, match_uid=None):
 # scan_rfid(mode="match", match_uid="12345678")  # Scan indefinitely until a match is found
 # scan_rfid(mode="first_match")  # Scan until any UID is found
 # scan_rfid(mode="first_match_or_time", time_limit=10)  # Scan until any UID is found or time runs out
+# scan_rfid(mode="forever")  # Scan forever (must manually interrupt program to stop)

@@ -11,6 +11,7 @@ scan_rfid(mode="match_or_time", time_limit=10, match_uid="12345678")  # Scan unt
 scan_rfid(mode="match", match_uid="12345678")  # Scan indefinitely until a match is found
 scan_rfid(mode="first_match")  # Scan until any UID is found
 scan_rfid(mode="first_match_or_time", time_limit=10)  # Scan until any UID is found or time runs out
+scan_rfid(mode="forever")  # Scan forever (must manually interrupt program to stop)
 
 ```
 
