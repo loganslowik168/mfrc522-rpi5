@@ -22,3 +22,7 @@ Made for the Holographic AI Assistant/Associate
 https://github.com/danjperron/MFRC522-python
 
 https://github.com/mab5vot9us9a/MFRC522-python/blob/master/MFRC522.py 
+
+
+# NOTE FOR LOGAN FOR E-WEEK
+**Connect Johnathon to pin 23**
